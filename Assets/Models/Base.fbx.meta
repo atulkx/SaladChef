@@ -1,0 +1,154 @@
+fileFormatVersion: 2
+guid: b1bca978dcaa64e41b7c8950ad988184
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: ChefPlate
+    100004: ChefPlate.001
+    100006: Chopper
+    100008: Chopper.001
+    100010: Cube.001
+    100012: Item
+    100014: Item.001
+    100016: Item.002
+    100018: Item.003
+    100020: Item.004
+    100022: Item.005
+    100024: TrashCan
+    400000: //RootNode
+    400002: ChefPlate
+    400004: ChefPlate.001
+    400006: Chopper
+    400008: Chopper.001
+    400010: Cube.001
+    400012: Item
+    400014: Item.001
+    400016: Item.002
+    400018: Item.003
+    400020: Item.004
+    400022: Item.005
+    400024: TrashCan
+    2100000: No Name
+    2300000: ChefPlate
+    2300002: ChefPlate.001
+    2300004: Chopper
+    2300006: Chopper.001
+    2300008: Cube.001
+    2300010: Item
+    2300012: Item.001
+    2300014: Item.002
+    2300016: Item.003
+    2300018: Item.004
+    2300020: Item.005
+    2300022: TrashCan
+    3300000: ChefPlate
+    3300002: ChefPlate.001
+    3300004: Chopper
+    3300006: Chopper.001
+    3300008: Cube.001
+    3300010: Item
+    3300012: Item.001
+    3300014: Item.002
+    3300016: Item.003
+    3300018: Item.004
+    3300020: Item.005
+    3300022: TrashCan
+    4300000: Cube.001
+    4300002: Item.001
+    4300004: Item.002
+    4300006: Item.003
+    4300008: Item
+    4300010: Item.005
+    4300012: Item.004
+    4300014: ChefPlate
+    4300016: TrashCan
+    4300018: Chopper
+    4300020: Chopper.001
+    4300022: ChefPlate.001
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,2 @@
+D:\Atul\Unity_Projects\GIt_Repo\SaladChef\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\Atul\Unity_Projects\GIt_Repo\SaladChef\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache

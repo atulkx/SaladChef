@@ -10,6 +10,9 @@ TagManager:
   - D
   - E
   - F
+  - ChopperA
+  - ChopperB
+  - Customer
   layers:
   - Default
   - TransparentFX

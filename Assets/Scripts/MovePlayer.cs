@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MovePlayer : MonoBehaviour
 {
     CharacterController characterController;
-    public string[] bag = new string[2];
+    public string[] bag = new string[3];
     public List<string> chopper = new List<string>();
     public List<string> vessel = new List<string>();
     public List<string> veggies = new List<string> { "A", "B", "C", "D", "E", "F" };
@@ -24,7 +24,7 @@ public class MovePlayer : MonoBehaviour
     public float tmeLeft;
     public Text timer, point;
 
-    public int scorePoint = 0, chopperIndex = 0;
+    public int scorePoint = 0, chopperIndex = 0,bagindex=0;
 
     void Start()
     {
@@ -101,7 +101,7 @@ public class MovePlayer : MonoBehaviour
         //If the GameObject has the same tag as specified, output this message in the console
         if (veggies.Contains(collision.gameObject.tag))
         {
-            if (Input.GetButtonUp("Take"))
+           if (Input.GetButtonUp("Take"))
             {
 
                 if (bag[0] == "null")
@@ -148,6 +148,7 @@ public class MovePlayer : MonoBehaviour
                 Debug.Log("Chopped!!!!!!!!!!!!!!!!");
                 bag[0] = "null";
                 bag[1] = "null";
+                bagindex=0;
                 Sprite veggie = Resources.Load<Sprite>("null");
                 item1.sprite = veggie;
                 item2.sprite = veggie;
@@ -216,6 +217,7 @@ public class MovePlayer : MonoBehaviour
             {
                 bag[0] = "null";
                 bag[1] = "null";
+                bagindex=0;
                 vessel = new List<string>();
                 Sprite veggie = Resources.Load<Sprite>("null");
                 choppedItems[0].sprite = veggie;

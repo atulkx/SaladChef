@@ -59,6 +59,7 @@ public class MovePlayer : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
+    //Checking order is same
     private bool CheckSalad(List<string> list1, List<string> list2)
     {
         var areListsEqual = true;
@@ -77,7 +78,7 @@ public class MovePlayer : MonoBehaviour
         return areListsEqual;
     }
 
-
+    //Player time
     public IEnumerator StartCountdown(float countdownValue = 500)
     {
         tmeLeft = countdownValue;
@@ -93,7 +94,7 @@ public class MovePlayer : MonoBehaviour
 
     }
 
-
+    //Player Interaction
     void OnTriggerStay(Collider collision)
     {
         //Check for a match with the specific tag on any GameObject that collides with your GameObject

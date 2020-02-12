@@ -16,7 +16,8 @@ public class Customer_Order : MonoBehaviour
        StartCoroutine(CustomerWaitTime()); 
        menu= new string[] {"A","B","C","D","E","F"};
        
-       no = Random.Range (1, 3);
+       //Customer Order creation
+       no = Random.Range (1, 3);       
        for(int i=0;i<=no;i++){
            itemNo=Random.Range (0,5);
            choice.Add(menu[itemNo]);
@@ -25,7 +26,7 @@ public class Customer_Order : MonoBehaviour
        }
        
     }
-
+     //Customer wait time
     public IEnumerator CustomerWaitTime(float countdownValue = 30)
     {
         timeLeft = countdownValue;

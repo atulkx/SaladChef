@@ -24,5 +24,5 @@ Programmer-Art SaladChef simulation in Unity
 
 
 ## Incompleted Task
--Pickup Implementation
--High Score list
+- Pickup Implementation
+- High Score list

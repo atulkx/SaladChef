@@ -21,7 +21,7 @@ public class Customer_gen : MonoBehaviour
     }
 
      
-
+    //Generating Customer
     public IEnumerator CustomerDrop(){
         while(customerCount<lvl){
             yield return new WaitForSeconds(5f);
@@ -33,7 +33,7 @@ public class Customer_gen : MonoBehaviour
             }
         }
     }
-
+    //Customer Leaving
     public void CustomerOut(int tableno){
         customerCount-=1; 
         for(int i=0;i<xpos.Length;i++){

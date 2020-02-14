@@ -31,7 +31,7 @@ public class MovePlayer : MonoBehaviour
     private string scoreKey="PlayerA";
     void Start()
     {
-        // 
+     // Start player time countdown
         fininshIndex=0;
         StartCoroutine(StartCountdown(200));
         bag[0] = "null";
@@ -63,6 +63,7 @@ public class MovePlayer : MonoBehaviour
 
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
+        //Customer Interaction
 
         if (detectCollision!=null && Input.GetButtonUp("Take"))
             {
@@ -100,6 +101,7 @@ public class MovePlayer : MonoBehaviour
             }
 
     }
+//Checks if order is served correctly
 
     private bool CheckSalad(List<string> list1, List<string> list2)
     {
@@ -119,6 +121,7 @@ public class MovePlayer : MonoBehaviour
         return areListsEqual;
     }
 
+//Player count down
 
     public IEnumerator StartCountdown(float countdownValue = 5)
     {
@@ -137,6 +140,7 @@ public class MovePlayer : MonoBehaviour
         fininshIndex=1;       
 
     }
+    //Coroutine for speed pickup
 
     public IEnumerator BonusSpeed()
     {
@@ -144,6 +148,7 @@ public class MovePlayer : MonoBehaviour
         yield return new WaitForSeconds(10f);
         speed=100;
     }
+    //Coroutine for Chopping
 
     public IEnumerator Chopping()
     {
@@ -284,6 +289,7 @@ public class MovePlayer : MonoBehaviour
             }
 
         }
+        //Bonus point interactions
 
         if(collision.gameObject.tag=="PointBonusA")
         {

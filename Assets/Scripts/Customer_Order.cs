@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Customer_Order : MonoBehaviour
 {
-    // Start is called before the first frame update
     public string[] menu;
     private int no,itemNo;
     public List<string> choice = new List<string>();
@@ -16,10 +15,12 @@ public class Customer_Order : MonoBehaviour
     
     void Start()
     {
+        //Starts customer timer countdown
        StartCoroutine(CustomerWaitTime(countdownValue)); 
        menu= new string[] {"A","B","C","D","E","F"};
        genCustomer = GameObject.Find("Customer_genObject");
        no = Random.Range (1, 3);
+       //Customer order 
        for(int i=0;i<=no;i++){
            itemNo=Random.Range (0,5);
            choice.Add(menu[itemNo]);

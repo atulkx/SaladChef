@@ -63,7 +63,8 @@ public class MovePlayer_B : MonoBehaviour
 
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
-
+        //Customer Interaction
+        
         if (detectCollision!=null && Input.GetButtonUp("Take_B"))
             {
 
@@ -102,6 +103,7 @@ public class MovePlayer_B : MonoBehaviour
             }
 
     }
+//Checks if order is served correctly
 
     private bool CheckSalad(List<string> list1, List<string> list2)
     {
@@ -121,6 +123,7 @@ public class MovePlayer_B : MonoBehaviour
         return areListsEqual;
     }
 
+//Player count down
 
     public IEnumerator StartCountdown(float countdownValue = 100)
     {
@@ -146,7 +149,7 @@ public class MovePlayer_B : MonoBehaviour
         yield return new WaitForSeconds(10f);
         speed=100;
     }
-
+    //Coroutine for Chopping
     public IEnumerator Chopping()
     {
         speed=0;
@@ -287,7 +290,7 @@ public class MovePlayer_B : MonoBehaviour
             }
 
         }
-
+        //Bonus point interactions
         if(collision.gameObject.tag=="PointBonusB")
         {
             scorePoint -= 50;

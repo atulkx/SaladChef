@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Customer_gen : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject Customer_prefab;
     public int ypos=538,zpos=174;
     public int[] xpos ;
@@ -24,7 +23,7 @@ public class Customer_gen : MonoBehaviour
     }
 
      
-
+//Customer generation randomly occuring function
     public IEnumerator CustomerDrop(float time=5){
         Debug.Log("Customer out");
         while(customerCount<lvl){
@@ -38,6 +37,7 @@ public class Customer_gen : MonoBehaviour
         }
     }
 
+//Table no which is empty
     public void CustomerOut(int tableno){
         customerCount-=1; 
         for(int i=0;i<xpos.Length;i++){
@@ -48,6 +48,8 @@ public class Customer_gen : MonoBehaviour
        
        
     }
+    
+//Start Customer Spawning
     public  void Instatiate(){
          int time = Random.Range (3, 8);
          StartCoroutine(CustomerDrop(time));

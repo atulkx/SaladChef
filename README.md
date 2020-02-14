@@ -22,6 +22,6 @@ A simulation based game in which restaraunt owner serve customers with different
 |Throw in trash         |`Tab`|`N`|
 |Satisfy customer         |`Q`|`B`|
 
-##Changes
+## Changes
 
  - Plate is avoided as customer can put vegetables on chopper itself for making different combinations.

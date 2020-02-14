@@ -35,7 +35,7 @@ public class ScoreSaver : MonoBehaviour
         ShowList();
     }
 
-    // Update is called once per frame
+    // Updates the highscores list
     void UpdateList(int point)
     {
         for(int i=1;i<=10;i++){
@@ -49,6 +49,7 @@ public class ScoreSaver : MonoBehaviour
         }
     }
 
+    //Show highscores list
     void ShowList(){
         for(int i =1;i<=10;i++){
             highScore=PlayerPrefs.GetInt(highScoreKey+i.ToString(),0);

@@ -8,16 +8,18 @@ public class Customer_Order : MonoBehaviour
     public string[] menu;
     private int no,itemNo;
     public List<string> choice = new List<string>();
-    public float timeLeft;
+    public float timeLeft,countdownValue=30f;
     public Slider slider;
+
+    public GameObject genCustomer;
     public Image[] orderPic;
+    
     void Start()
     {
-       StartCoroutine(CustomerWaitTime()); 
+       StartCoroutine(CustomerWaitTime(countdownValue)); 
        menu= new string[] {"A","B","C","D","E","F"};
-       
-       //Customer Order creation
-       no = Random.Range (1, 3);       
+       genCustomer = GameObject.Find("Customer_genObject");
+       no = Random.Range (1, 3);
        for(int i=0;i<=no;i++){
            itemNo=Random.Range (0,5);
            choice.Add(menu[itemNo]);
@@ -26,8 +28,8 @@ public class Customer_Order : MonoBehaviour
        }
        
     }
-     //Customer wait time
-    public IEnumerator CustomerWaitTime(float countdownValue = 30)
+
+    public IEnumerator CustomerWaitTime(float countdownValue = 30f)
     {
         timeLeft = countdownValue;
         while (timeLeft >= 0)
@@ -39,7 +41,9 @@ public class Customer_Order : MonoBehaviour
             
         }
         Destroy(gameObject);
-
+        int tableno = (int)gameObject.transform.position.x;
+        genCustomer.GetComponent<Customer_gen>().CustomerOut(tableno);
+        genCustomer.GetComponent<Customer_gen>().Instatiate();
 
 
     }
@@ -48,6 +52,7 @@ public class Customer_Order : MonoBehaviour
     public List<string> place_order(){
         return choice;
     }
+    
     // Update is called once per frame
     void Update()
     {

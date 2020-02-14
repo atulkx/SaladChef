@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MovePlayer_B : MonoBehaviour
 {
     CharacterController characterController;
-    public string[] bag = new string[2];
+    public string[] bag = new string[3];
     public List<string> chopper = new List<string>();
     public List<string> vessel = new List<string>();
     public List<string> veggies = new List<string> { "A", "B", "C", "D", "E", "F" };
@@ -21,11 +21,15 @@ public class MovePlayer_B : MonoBehaviour
     public GameObject Customercontrol;
     StatusController status;
     public GameObject canvas, statusText;
-    public float tmeLeft;
+    public float timeLeft;
     public Text timer, point;
 
-    public int scorePoint = 0, chopperIndex = 0;
-
+    public int scorePoint = 0, chopperIndex = 0,bagindex=0;
+    private Collider detectCollision=null;
+    public Animator ChefRun;
+    public GameObject[] BonusPoint_prefab;
+    public float ypos=555f,zpos1=9.58f,zpos2=-194.4f,xpos1=-205f,xpos2=204.8f; 
+    private string scoreKey="PlayerB";
     void Start()
     {
         // 
@@ -35,6 +39,7 @@ public class MovePlayer_B : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         customer_Gen = new Customer_gen();
         status = new StatusController();
+        ChefRun=GetComponent<Animator>();
     }
 
     void Update()
@@ -46,6 +51,7 @@ public class MovePlayer_B : MonoBehaviour
 
             moveDirection = new Vector3(Input.GetAxis("Horizontal_B"), 0.0f, Input.GetAxis("Vertical_B"));
             moveDirection *= speed;
+            
 
 
         }
@@ -57,6 +63,44 @@ public class MovePlayer_B : MonoBehaviour
 
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
+
+        if (detectCollision!=null && Input.GetButtonUp("Take_B"))
+            {
+
+                if (bag[0] == "null")
+                {
+                    bag[0] = detectCollision.gameObject.tag;
+                    Sprite veggie = Resources.Load<Sprite>(detectCollision.gameObject.tag);
+                    item1.sprite = veggie;
+                    Debug.Log("took");
+                    bag[1] = "null";
+                    // status.CreateFloatingText("took", transform);
+
+
+
+                }
+                else if (bag[1] == "null")
+                {
+                    Debug.Log("took");
+                    // status.CreateFloatingText("took", transform);
+                    bag[1] = detectCollision.gameObject.tag;
+                    Sprite veggie = Resources.Load<Sprite>(detectCollision.gameObject.tag);
+                    item2.sprite = veggie;
+                }
+
+                detectCollision=null;
+            }
+
+            if(Input.GetButtonDown("Horizontal_B") || Input.GetButtonDown("Vertical_B")){
+                Debug.Log("Runnnnnnnnnnnnnnnnnnn");
+
+                ChefRun.SetBool("IsWalk",true);
+            }
+            if(Input.GetButtonUp("Horizontal_B") || Input.GetButtonUp("Vertical_B")){
+               
+                ChefRun.SetBool("IsWalk",false);
+            }
+
     }
 
     private bool CheckSalad(List<string> list1, List<string> list2)
@@ -80,16 +124,17 @@ public class MovePlayer_B : MonoBehaviour
 
     public IEnumerator StartCountdown(float countdownValue = 500)
     {
-        tmeLeft = countdownValue;
-        while (tmeLeft >= 0)
+        timeLeft = countdownValue;
+        while (timeLeft >= 0)
         {
-            timer.text = tmeLeft.ToString();
+            timer.text = timeLeft.ToString();
             yield return new WaitForSeconds(1.0f);
-            tmeLeft--;
+            timeLeft--;
         }
 
         speed = 0;
-
+        PlayerPrefs.SetInt(scoreKey,scorePoint);
+        PlayerPrefs.Save();
 
     }
 
@@ -101,33 +146,11 @@ public class MovePlayer_B : MonoBehaviour
         //If the GameObject has the same tag as specified, output this message in the console
         if (veggies.Contains(collision.gameObject.tag))
         {
-            if (Input.GetButtonUp("Take_B"))
-            {
-
-                if (bag[0] == "null")
-                {
-                    bag[0] = collision.gameObject.tag;
-                    Sprite veggie = Resources.Load<Sprite>(collision.gameObject.tag);
-                    item1.sprite = veggie;
-                    Debug.Log("took");
-                    bag[1] = "null";
-                    // status.CreateFloatingText("took", transform);
-
-
-
-                }
-                else if (bag[1] == "null")
-                {
-                    Debug.Log("took");
-                    // status.CreateFloatingText("took", transform);
-                    bag[1] = collision.gameObject.tag;
-                    Sprite veggie = Resources.Load<Sprite>(collision.gameObject.tag);
-                    item2.sprite = veggie;
-                }
-            }
+           detectCollision=collision;
         }
         if (collision.gameObject.tag == "ChopperB")
         {
+            detectCollision=null;
             if (Input.GetButtonUp("Chop_B"))
             {
                 //    status.CreateFloatingText("Chopping!!!!", transform);
@@ -148,6 +171,7 @@ public class MovePlayer_B : MonoBehaviour
                 Debug.Log("Chopped!!!!!!!!!!!!!!!!");
                 bag[0] = "null";
                 bag[1] = "null";
+                bagindex=0;
                 Sprite veggie = Resources.Load<Sprite>("null");
                 item1.sprite = veggie;
                 item2.sprite = veggie;
@@ -156,6 +180,7 @@ public class MovePlayer_B : MonoBehaviour
             }
             if (Input.GetButtonUp("Take_B"))
             {
+               
                 // status.CreateFloatingText("took", transform);
                 int i = 0;
                 chopperIndex = 0;
@@ -169,8 +194,9 @@ public class MovePlayer_B : MonoBehaviour
                     choppedItems[i].sprite = choopedItemSprite;
                     i++;
                 }
+                Debug.Log("tAKEN oRDER");
                 vessel = chopper;
-                chopper = new List<string>();
+                
             }
         }
 
@@ -185,8 +211,18 @@ public class MovePlayer_B : MonoBehaviour
                 bool check = CheckSalad(vessel, items);
                 if (check)
                 {
+                    float diff=order.GetComponent<Customer_Order>().countdownValue-order.GetComponent<Customer_Order>().timeLeft;
+                    float percentage=(100-((diff/order.GetComponent<Customer_Order>().countdownValue)*100));
                     Debug.Log("Point");
+                    Debug.Log("Percentage"+percentage.ToString());
                     scorePoint += 100;
+                    if(percentage>=40){
+                        Debug.Log("Pickup Spwaned");
+                        int objectno=Random.Range(0,3);
+                        float x = Random.Range (xpos1, xpos2);
+                        float z = Random.Range (zpos1, zpos2);
+                        Instantiate(BonusPoint_prefab[objectno],new Vector3(x,ypos,z),Quaternion.identity);
+                    }
                     point.text = scorePoint.ToString();
                     //    status.CreateFloatingText("GoodJob", transform);
                     vessel = new List<string>();
@@ -198,6 +234,8 @@ public class MovePlayer_B : MonoBehaviour
                     choppedItems[2].sprite = veggie;
                     Customercontrol.GetComponent<Customer_gen>().CustomerOut(tableno);
                     StartCoroutine(Customercontrol.GetComponent<Customer_gen>().CustomerDrop());
+               
+                    chopper = new List<string>();
                 }
                 else
                 {
@@ -205,6 +243,7 @@ public class MovePlayer_B : MonoBehaviour
                     point.text = scorePoint.ToString();
                     Debug.Log("Wrong order");
                     // status.CreateFloatingText("Bad", transform);
+                    chopper = new List<string>();
                 }
             }
 
@@ -216,7 +255,9 @@ public class MovePlayer_B : MonoBehaviour
             {
                 bag[0] = "null";
                 bag[1] = "null";
+                bagindex=0;
                 vessel = new List<string>();
+                chopper = new List<string>();
                 Sprite veggie = Resources.Load<Sprite>("null");
                 choppedItems[0].sprite = veggie;
                 choppedItems[1].sprite = veggie;
@@ -225,6 +266,26 @@ public class MovePlayer_B : MonoBehaviour
                 item2.sprite = veggie;
             }
 
+        }
+
+        if(collision.gameObject.tag=="PointBonusB")
+        {
+            scorePoint -= 50;
+            point.text = scorePoint.ToString();
+            Destroy(collision.gameObject);
+        }
+
+        if(collision.gameObject.tag=="SpeedBonusB")
+        {
+            speed=200;
+            Destroy(collision.gameObject);
+        }
+
+        if(collision.gameObject.tag=="TimeBonusB")
+        {
+            timeLeft+=10;
+            timer.text = timeLeft.ToString();
+            Destroy(collision.gameObject);
         }
 
 

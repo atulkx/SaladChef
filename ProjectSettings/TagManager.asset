@@ -14,6 +14,12 @@ TagManager:
   - ChopperB
   - Customer
   - TrashCan
+  - PointBonusA
+  - SpeedBonusA
+  - TimeBonusA
+  - PointBonusB
+  - SpeedBonusB
+  - TimeBonusB
   layers:
   - Default
   - TransparentFX

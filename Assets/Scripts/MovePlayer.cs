@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MovePlayer : MonoBehaviour
 {
@@ -21,11 +22,15 @@ public class MovePlayer : MonoBehaviour
     public GameObject Customercontrol;
     StatusController status;
     public GameObject canvas, statusText;
-    public float tmeLeft;
+    public float timeLeft;
     public Text timer, point;
 
     public int scorePoint = 0, chopperIndex = 0,bagindex=0;
-
+    private Collider detectCollision=null;
+    public Animator ChefRun;
+    public GameObject[] BonusPoint_prefab;
+    public float ypos=555f,zpos1=9.58f,zpos2=-194.4f,xpos1=-205f,xpos2=204.8f; 
+    private string scoreKey="PlayerA";
     void Start()
     {
         // 
@@ -35,6 +40,7 @@ public class MovePlayer : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         customer_Gen = new Customer_gen();
         status = new StatusController();
+        ChefRun=GetComponent<Animator>();
     }
 
     void Update()
@@ -46,6 +52,7 @@ public class MovePlayer : MonoBehaviour
 
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
             moveDirection *= speed;
+            
 
 
         }
@@ -57,9 +64,44 @@ public class MovePlayer : MonoBehaviour
 
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
+
+        if (detectCollision!=null && Input.GetButtonUp("Take"))
+            {
+
+                if (bag[0] == "null")
+                {
+                    bag[0] = detectCollision.gameObject.tag;
+                    Sprite veggie = Resources.Load<Sprite>(detectCollision.gameObject.tag);
+                    item1.sprite = veggie;
+                    Debug.Log("took");
+                    bag[1] = "null";
+                    // status.CreateFloatingText("took", transform);
+
+
+
+                }
+                else if (bag[1] == "null")
+                {
+                    Debug.Log("took");
+                    // status.CreateFloatingText("took", transform);
+                    bag[1] = detectCollision.gameObject.tag;
+                    Sprite veggie = Resources.Load<Sprite>(detectCollision.gameObject.tag);
+                    item2.sprite = veggie;
+                }
+
+                detectCollision=null;
+            }
+
+            if(Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")){
+                ChefRun.SetBool("IsWalk",true);
+            }
+            if(Input.GetButtonUp("Horizontal") || Input.GetButtonUp("Vertical")){
+               
+                ChefRun.SetBool("IsWalk",false);
+            }
+
     }
 
-    //Checking order is same
     private bool CheckSalad(List<string> list1, List<string> list2)
     {
         var areListsEqual = true;
@@ -78,23 +120,26 @@ public class MovePlayer : MonoBehaviour
         return areListsEqual;
     }
 
-    //Player time
-    public IEnumerator StartCountdown(float countdownValue = 500)
+
+    public IEnumerator StartCountdown(float countdownValue = 10)
     {
-        tmeLeft = countdownValue;
-        while (tmeLeft >= 0)
+        timeLeft = countdownValue;
+        while (timeLeft >= 0)
         {
-            timer.text = tmeLeft.ToString();
+            timer.text = timeLeft.ToString();
             yield return new WaitForSeconds(1.0f);
-            tmeLeft--;
+            timeLeft--;
         }
 
         speed = 0;
-
+        Debug.Log("Score Saved  "+scorePoint.ToString());
+        PlayerPrefs.SetInt(scoreKey,scorePoint);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene("HighScore");
 
     }
 
-    //Player Interaction
+
     void OnTriggerStay(Collider collision)
     {
         //Check for a match with the specific tag on any GameObject that collides with your GameObject
@@ -102,33 +147,11 @@ public class MovePlayer : MonoBehaviour
         //If the GameObject has the same tag as specified, output this message in the console
         if (veggies.Contains(collision.gameObject.tag))
         {
-           if (Input.GetButtonUp("Take"))
-            {
-
-                if (bag[0] == "null")
-                {
-                    bag[0] = collision.gameObject.tag;
-                    Sprite veggie = Resources.Load<Sprite>(collision.gameObject.tag);
-                    item1.sprite = veggie;
-                    Debug.Log("took");
-                    bag[1] = "null";
-                    // status.CreateFloatingText("took", transform);
-
-
-
-                }
-                else if (bag[1] == "null")
-                {
-                    Debug.Log("took");
-                    // status.CreateFloatingText("took", transform);
-                    bag[1] = collision.gameObject.tag;
-                    Sprite veggie = Resources.Load<Sprite>(collision.gameObject.tag);
-                    item2.sprite = veggie;
-                }
-            }
+           detectCollision=collision;
         }
         if (collision.gameObject.tag == "ChopperA")
         {
+            detectCollision=null;
             if (Input.GetButtonUp("Chop"))
             {
                 //    status.CreateFloatingText("Chopping!!!!", transform);
@@ -158,6 +181,7 @@ public class MovePlayer : MonoBehaviour
             }
             if (Input.GetButtonUp("Take"))
             {
+               
                 // status.CreateFloatingText("took", transform);
                 int i = 0;
                 chopperIndex = 0;
@@ -171,8 +195,9 @@ public class MovePlayer : MonoBehaviour
                     choppedItems[i].sprite = choopedItemSprite;
                     i++;
                 }
+                Debug.Log("tAKEN oRDER");
                 vessel = chopper;
-                chopper = new List<string>();
+                
             }
         }
 
@@ -187,8 +212,18 @@ public class MovePlayer : MonoBehaviour
                 bool check = CheckSalad(vessel, items);
                 if (check)
                 {
+                    float diff=order.GetComponent<Customer_Order>().countdownValue-order.GetComponent<Customer_Order>().timeLeft;
+                    float percentage=(100-((diff/order.GetComponent<Customer_Order>().countdownValue)*100));
                     Debug.Log("Point");
+                    Debug.Log("Percentage"+percentage.ToString());
                     scorePoint += 100;
+                    if(percentage>=40){
+                        Debug.Log("Pickup Spwaned");
+                        int objectno=Random.Range(0,3);
+                        float x = Random.Range (xpos1, xpos2);
+                        float z = Random.Range (zpos1, zpos2);
+                        Instantiate(BonusPoint_prefab[objectno],new Vector3(x,ypos,z),Quaternion.identity);
+                    }
                     point.text = scorePoint.ToString();
                     //    status.CreateFloatingText("GoodJob", transform);
                     vessel = new List<string>();
@@ -200,6 +235,8 @@ public class MovePlayer : MonoBehaviour
                     choppedItems[2].sprite = veggie;
                     Customercontrol.GetComponent<Customer_gen>().CustomerOut(tableno);
                     StartCoroutine(Customercontrol.GetComponent<Customer_gen>().CustomerDrop());
+               
+                    chopper = new List<string>();
                 }
                 else
                 {
@@ -207,6 +244,7 @@ public class MovePlayer : MonoBehaviour
                     point.text = scorePoint.ToString();
                     Debug.Log("Wrong order");
                     // status.CreateFloatingText("Bad", transform);
+                    chopper = new List<string>();
                 }
             }
 
@@ -220,6 +258,7 @@ public class MovePlayer : MonoBehaviour
                 bag[1] = "null";
                 bagindex=0;
                 vessel = new List<string>();
+                chopper = new List<string>();
                 Sprite veggie = Resources.Load<Sprite>("null");
                 choppedItems[0].sprite = veggie;
                 choppedItems[1].sprite = veggie;
@@ -228,6 +267,26 @@ public class MovePlayer : MonoBehaviour
                 item2.sprite = veggie;
             }
 
+        }
+
+        if(collision.gameObject.tag=="PointBonusA")
+        {
+            scorePoint -= 50;
+            point.text = scorePoint.ToString();
+            Destroy(collision.gameObject);
+        }
+
+        if(collision.gameObject.tag=="SpeedBonusA")
+        {
+            speed=200;
+            Destroy(collision.gameObject);
+        }
+
+        if(collision.gameObject.tag=="TimeBonusA")
+        {
+            timeLeft+=10;
+            timer.text = timeLeft.ToString();
+            Destroy(collision.gameObject);
         }
 
 

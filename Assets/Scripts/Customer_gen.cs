@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Customer_gen : MonoBehaviour
 {
@@ -12,12 +13,14 @@ public class Customer_gen : MonoBehaviour
     public List<int> occupency = new List<int>();
     public int customerCount,pos;
     private int lvl=3;
+    public GameObject playerA,playerB;
 
     void Start()
     {
         xpos= new int[] {-187,-27,143};    //{-187, -107, -27, 53,143};
         StartCoroutine(CustomerDrop(5));
-        
+        playerA = GameObject.Find("Player1");
+        playerB = GameObject.Find("Player2");
     }
 
      
@@ -49,5 +52,13 @@ public class Customer_gen : MonoBehaviour
          int time = Random.Range (3, 8);
          StartCoroutine(CustomerDrop(time));
          Debug.Log("CustomerOut");
+    }
+
+    void Update() {
+        {
+            if( playerA.GetComponent<MovePlayer>().fininshIndex==1 && playerB.GetComponent<MovePlayer_B>().fininshIndex==1){
+                SceneManager.LoadScene("HighScore");
+            }
+        }
     }
 }

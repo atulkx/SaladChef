@@ -19,13 +19,11 @@ public class MovePlayer : MonoBehaviour
     public float gravity = 20.0f;
     private Vector3 moveDirection = Vector3.zero;
     Customer_gen customer_Gen;
-    public GameObject Customercontrol;
-    StatusController status;
-    public GameObject canvas, statusText;
+    public GameObject canvas, statusText,Customercontrol,choppingAnim;
     public float timeLeft;
     public Text timer, point;
 
-    public int scorePoint = 0, chopperIndex = 0,bagindex=0;
+    public int scorePoint = 0, chopperIndex = 0,bagindex=0,fininshIndex=0;
     private Collider detectCollision=null;
     public Animator ChefRun;
     public GameObject[] BonusPoint_prefab;
@@ -34,12 +32,12 @@ public class MovePlayer : MonoBehaviour
     void Start()
     {
         // 
-        StartCoroutine(StartCountdown());
+        fininshIndex=0;
+        StartCoroutine(StartCountdown(200));
         bag[0] = "null";
         bag[1] = "null";
         characterController = GetComponent<CharacterController>();
         customer_Gen = new Customer_gen();
-        status = new StatusController();
         ChefRun=GetComponent<Animator>();
     }
 
@@ -52,6 +50,7 @@ public class MovePlayer : MonoBehaviour
 
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
             moveDirection *= speed;
+            transform.rotation = Quaternion.LookRotation(moveDirection);
             
 
 
@@ -121,7 +120,7 @@ public class MovePlayer : MonoBehaviour
     }
 
 
-    public IEnumerator StartCountdown(float countdownValue = 10)
+    public IEnumerator StartCountdown(float countdownValue = 5)
     {
         timeLeft = countdownValue;
         while (timeLeft >= 0)
@@ -135,8 +134,24 @@ public class MovePlayer : MonoBehaviour
         Debug.Log("Score Saved  "+scorePoint.ToString());
         PlayerPrefs.SetInt(scoreKey,scorePoint);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("HighScore");
+        fininshIndex=1;       
 
+    }
+
+    public IEnumerator BonusSpeed()
+    {
+        speed=200;
+        yield return new WaitForSeconds(10f);
+        speed=100;
+    }
+
+    public IEnumerator Chopping()
+    {
+        speed=0;
+        choppingAnim.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        speed=100;
+        choppingAnim.SetActive(false);
     }
 
 
@@ -154,6 +169,7 @@ public class MovePlayer : MonoBehaviour
             detectCollision=null;
             if (Input.GetButtonUp("Chop"))
             {
+                StartCoroutine(Chopping());
                 //    status.CreateFloatingText("Chopping!!!!", transform);
                 Debug.Log("Chopping!!!!!!!!!!!!!!");
                 foreach (string item in bag)
@@ -217,7 +233,7 @@ public class MovePlayer : MonoBehaviour
                     Debug.Log("Point");
                     Debug.Log("Percentage"+percentage.ToString());
                     scorePoint += 100;
-                    if(percentage>=40){
+                    if(percentage>=60){
                         Debug.Log("Pickup Spwaned");
                         int objectno=Random.Range(0,3);
                         float x = Random.Range (xpos1, xpos2);
@@ -278,13 +294,13 @@ public class MovePlayer : MonoBehaviour
 
         if(collision.gameObject.tag=="SpeedBonusA")
         {
-            speed=200;
+            StartCoroutine(BonusSpeed());
             Destroy(collision.gameObject);
         }
 
         if(collision.gameObject.tag=="TimeBonusA")
         {
-            timeLeft+=10;
+            timeLeft+=40;
             timer.text = timeLeft.ToString();
             Destroy(collision.gameObject);
         }

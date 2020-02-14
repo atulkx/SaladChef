@@ -8,27 +8,28 @@ public class ScoreSaver : MonoBehaviour
     public int highScore = 0;
     string highScoreKey = "HighScore";
     public Text[] scoreList;
-    public Text ScoreA,ScoreB;
+    public Text ScoreA,ScoreB,winner;
     public int scoreA,scoreB;
     public GameObject[] Players; 
     // Start is called before the first frame update
     void Start()
     {
-        // PlayerPrefs.SetInt(highScoreKey+"1",0); 
-        // PlayerPrefs.SetInt(highScoreKey+"2",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"3",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"4",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"5",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"6",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"7",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"8",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"9",0);   
-        // PlayerPrefs.SetInt(highScoreKey+"10",0);   
-        // PlayerPrefs.Save();
+        
         scoreA=PlayerPrefs.GetInt("PlayerA",0);
         ScoreA.text=scoreA.ToString();
         scoreB=PlayerPrefs.GetInt("PlayerB",0);
         ScoreB.text=scoreB.ToString();
+        Debug.Log("PLAYER A "+scoreA.ToString());
+        Debug.Log("PLAYER B "+scoreB.ToString());
+        if(scoreA>scoreB){
+            winner.text="PLAYER A";
+        }
+        else if(scoreA<scoreB) {
+            winner.text="PLAYER B";
+        }
+        else{
+            winner.text="DRAW!!!";
+        }
         UpdateList(scoreA);
         UpdateList(scoreB);
         ShowList();

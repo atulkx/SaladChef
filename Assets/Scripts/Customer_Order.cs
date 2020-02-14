@@ -8,7 +8,7 @@ public class Customer_Order : MonoBehaviour
     public string[] menu;
     private int no,itemNo;
     public List<string> choice = new List<string>();
-    public float timeLeft,countdownValue=30f;
+    public float timeLeft,countdownValue=40f;
     public Slider slider;
 
     public GameObject genCustomer;

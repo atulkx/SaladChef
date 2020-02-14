@@ -24,4 +24,4 @@ A simulation based game in which restaraunt owner serve customers with different
 
 ## Changes
 
- - Plate is avoided as customer can put vegetables on chopper itself for making different combinations.
+ - Plate is avoided as player can put vegetables on chopper itself for making different combinations.
